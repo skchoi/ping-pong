@@ -8,7 +8,7 @@
 -- -4. Game ends when the goal behind one of the paddles has been hit
 --
 -- + Multi-touch
--- - Version Control (Seung)
+-- + Version Control
 
 blip = audio.loadSound("bullet1.wav")
 explode = audio.loadSound("hurt.wav")
