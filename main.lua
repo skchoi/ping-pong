@@ -22,7 +22,7 @@ player2 = { x0 = 0 }
 
 local physics = require('physics')
 physics.start( )
-physics.setScale( 13 )
+physics.setScale( 15 )
 physics.setGravity( 0, 0 )
 
 system.activate( "multitouch" )
@@ -35,35 +35,35 @@ endzone1.alpha = 0.5
 local endzone2 = display.newRect( display.contentWidth/2, 100, display.contentWidth, 200 )
 endzone2.alpha = 0.5
 
-local goal1 = display.newRect( display.contentWidth/2, 2.5, display.contentWidth, 5 )
+local goal1 = display.newRect( display.contentWidth/2, 2.5+200, display.contentWidth, 5 )
 physics.addBody( goal1, "static", {density = 1, friction = 0, bounce = 1, isSensor = false})
 
-local goal2 = display.newRect( display.contentWidth/2, display.contentHeight-2.5, display.contentWidth, 5, {density = 1, friction = 0, bounce = 1, isSensor = false} )
+local goal2 = display.newRect( display.contentWidth/2, display.contentHeight-2.5-200, display.contentWidth, 5, {density = 1, friction = 0, bounce = 1, isSensor = false} )
 physics.addBody( goal2, "static")
 
-local wall_left = display.newRect( 2.5, display.contentHeight/2, 5, display.contentHeight, {density = 1, friction = 0, bounce = 1, isSensor = false} )
+local wall_left = display.newRect( 2.5, display.contentHeight/2, 5, display.contentHeight-400, {density = 1, friction = 0, bounce = 1, isSensor = false} )
 physics.addBody( wall_left, "static")
 
-local wall_right = display.newRect( display.contentWidth-2.5, display.contentHeight/2, 5, display.contentHeight, {density = 1, friction = 0, bounce = 1, isSensor = false} )
+local wall_right = display.newRect( display.contentWidth-2.5, display.contentHeight/2, 5, display.contentHeight-400, {density = 1, friction = 0, bounce = 1, isSensor = false} )
 physics.addBody( wall_right, "static")
 
 
 -- Place moving objects
 
-local ball = display.newCircle( 200, 200, 5 )
+local ball = display.newCircle( display.contentWidth/2, display.contentHeight/2, 10, 10)
 ball.isBullet = true
-physics.addBody( ball, "dynamic", {density = 1, friction = 0, radius = 2.5, isSensor = false, bounce = 1} )
+physics.addBody( ball, "dynamic", {density = 1, friction = 0, radius = 5, isSensor = false, bounce = 1} )
 
-local paddle1 = display.newRect( display.contentWidth/2, display.contentHeight-25, paddle_width, 10 )
+local paddle1 = display.newRect( display.contentWidth/2, display.contentHeight-25-200, paddle_width, 10 )
 physics.addBody( paddle1, "static", {friction=0} )
 
-local paddle2 = display.newRect( display.contentWidth/2, 25, paddle_width, 10 )
+local paddle2 = display.newRect( display.contentWidth/2, 25+200, paddle_width, 10 )
 physics.addBody( paddle2, "static", {friction=0} )
 
 
 -- Randomly choose direction and force on ball
 
-ball:applyForce(100,100)
+ball:applyForce(500,500)
 
 
 -- Listeners
