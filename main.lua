@@ -16,8 +16,8 @@ explode = audio.loadSound("hurt.wav")
 local paddle_width = 100
 local player1
 local player2
-ball = {}
-ball2 = {}
+local ball
+local ball2
 
 player1 = { x0 = 0, score = 0 }
 player2 = { x0 = 0, score = 0 }
@@ -80,13 +80,6 @@ function bulletBounce( event )
   end
 end
 
-ball = display.newCircle( display.contentWidth/2, display.contentHeight/2, 10, 10)
-ball.isBullet = true
-physics.addBody( ball, "dynamic", {density = 1, friction = 0, radius = 5, isSensor = false, bounce = 1} )
-  ball:addEventListener( "collision", bulletBounce )
-
-  ball:applyLinearImpulse(100,100)
-
 function launchBall()
   ball = display.newCircle( display.contentWidth/2, display.contentHeight/2, 10, 10)
   ball.isBullet = true
@@ -94,7 +87,18 @@ function launchBall()
 
   ball:addEventListener( "collision", bulletBounce )
 
-  ball:applyLinearImpulse(100,100)
+  local launchx = math.random(90,110)
+  local launchy = math.random(90,110)
+
+  if (math.random(0,1)==0) then
+    launchx = -launchx
+  end
+
+  if (math.random(0,1)==0) then
+    launchy = -launchy
+  end
+
+  ball:applyLinearImpulse(launchx, launchy)
 end
 
 
@@ -113,41 +117,24 @@ function goal1struck( event )
     player2.score = player2.score + 1
     refreshScore()
     ball:removeSelf()
-    ball = nil
-    -- ball:setLinearVelocity( 0, 0 )
-    -- physics.removeBody(ball)
-    -- ball.x = display.contentWidth/2
-    -- ball.y = display.contentHeight/2
     audio.play( explode )
-    ball2 = display.newCircle( display.contentWidth/2, display.contentHeight/2, 10, 10)
-    ball2.isBullet = true
-    physics.addBody( ball2, "dynamic", {density = 1, friction = 0, radius = 5, isSensor = false, bounce = 1} )
-
-    -- ball:addEventListener( "collision", bulletBounce )
-    -- physics.stop( )
-    -- physics.start( )
-    ball2:applyLinearImpulse(100,100)
+    timer.performWithDelay( 1000, launchBall )
   end
 end
 
-goal1:addEventListener( "collision", goal1struck)
+goal1:addEventListener( "collision", goal1struck )
 
 function goal2struck( event )
   if event.phase=="began" then
     player1.score = player1.score + 1
     refreshScore()
     ball:removeSelf()
-    ball = nil
-    -- ball:setLinearVelocity( 0, 0 )
-    -- physics.removeBody(ball)
-    -- ball.x = display.contentWidth/2
-    -- ball.y = display.contentHeight/2
     audio.play( explode )
-    launchBall()
+    timer.performWithDelay( 1000, launchBall )
   end
 end
 
-goal2:addEventListener( "collision", goal2struck)
+goal2:addEventListener( "collision", goal2struck )
 
 
 coerceOnScreen = function( object )--{{{
@@ -197,5 +184,5 @@ endzone2:addEventListener("touch", paddle2touch)
 
 
 -- Start Game
--- launchBall()
+launchBall()
 
